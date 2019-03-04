@@ -4,7 +4,7 @@ CREATE SERVER csv_srv foreign data wrapper multicorn options (
     wrapper 'multicorn.csvfdw.CsvFdw'
 );
 
-create foreign table csvtest (
+CREATE FOREIGN TABLE csvtest (
        year numeric,
        make character varying,
        model character varying,
@@ -13,3 +13,10 @@ create foreign table csvtest (
        filename '/data/test.csv',
        skip_header '1',
        delimiter ',');
+
+CREATE FOREIGN TABLE constanttable (
+    test character varying,
+    test2 character varying
+) server multicorn_srv options (
+    wrapper 'myfdw.ConstantForeignDataWrapper'
+)

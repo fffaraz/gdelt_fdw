@@ -1,6 +1,6 @@
 FROM postgres:11.2
 RUN \
-set -euxo pipefail && \
+set -eux && \
 apt-get update && \
 apt-get upgrade -y && \
 apt-get install -y build-essential ca-certificates postgresql-server-dev-${PG_MAJOR} python3-dev python3-pip python3-setuptools && \

@@ -13,6 +13,6 @@ ls -l /usr/bin/python* && \
 ls -l /usr/local/bin/python* && \
 git clone git://github.com/Kozea/Multicorn.git && \
 cd Multicorn && \
-make && make install && \
+PYTHON=`which python3` make && make install && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*

@@ -1,2 +1,2 @@
 FROM postgres:11.2
-RUN pip install Pyrseas && pgxn install multicorn
+RUN easy_install pgxnclient && pgxn install multicorn

@@ -1,6 +1,7 @@
 FROM postgres:11.2
 RUN \
 set -eux && \
+alias python=python3 && \
 apt-get update && \
 apt-get upgrade -y && \
 apt-get install -y \

@@ -22,6 +22,4 @@ CREATE SERVER myfdw_srv foreign data wrapper multicorn options (
 CREATE FOREIGN TABLE constanttable (
     test character varying,
     test2 character varying
-) server myfdw_srv options (
-    wrapper 'myfdw.ConstantForeignDataWrapper'
-);
+) server myfdw_srv;

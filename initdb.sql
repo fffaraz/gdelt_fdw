@@ -23,3 +23,25 @@ CREATE FOREIGN TABLE constanttable (
     test character varying,
     test2 character varying
 ) server myfdw_srv;
+
+CREATE EXTENSION file_fdw;
+CREATE SERVER svr_file FOREIGN DATA WRAPPER file_fdw;
+
+CREATE FOREIGN TABLE fdt_film_locations
+  (title text ,
+  release_year integer ,
+  locations text ,
+  fun_facts text ,
+  production_company text ,
+  distributor text ,
+  director text ,
+  writer text ,
+  actor_1 text ,
+  actor_2 text ,
+  actor_3 text )
+  SERVER svr_file
+  OPTIONS (format 'csv', header 'true',
+  program 'wget -q -O - "$@" "https://data.sfgov.org/api/views/yitu-d5am/rows.csv"',
+  delimiter ',',
+  null ''
+);

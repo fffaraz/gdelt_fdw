@@ -41,7 +41,7 @@ CREATE FOREIGN TABLE fdt_film_locations
   actor_3 text )
   SERVER svr_file
   OPTIONS (format 'csv', header 'true',
-  program 'wget -q -O - "$@" "https://data.sfgov.org/api/views/yitu-d5am/rows.csv"',
+  program '/data/myscript.sh "$@"',
   delimiter ',',
   null ''
 );

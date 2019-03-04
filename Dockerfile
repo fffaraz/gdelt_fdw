@@ -11,8 +11,9 @@ ln -s $(which python3) /usr/bin/python && \
 ln -s $(which python3) /usr/local/bin/python && \
 ls -l /usr/bin/python* && \
 ls -l /usr/local/bin/python* && \
+export PYTHON_OVERRIDE=python3 && \
 git clone git://github.com/Kozea/Multicorn.git && \
 cd Multicorn && \
-PYTHON=`which python3` make && make install && \
+make && make install && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*

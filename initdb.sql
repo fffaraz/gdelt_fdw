@@ -1,3 +1,5 @@
+CREATE EXTENSION multicorn;
+
 CREATE SERVER csv_srv foreign data wrapper multicorn options (
     wrapper 'multicorn.csvfdw.CsvFdw'
 );

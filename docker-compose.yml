@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  db:
+    build: .
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=123456
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=123456
+    ports:
+      - 8097:80

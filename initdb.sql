@@ -23,4 +23,5 @@ CREATE FOREIGN TABLE constanttable (
     test character varying,
     test2 character varying
 ) server myfdw_srv options (
+    wrapper 'myfdw.ConstantForeignDataWrapper'
 );

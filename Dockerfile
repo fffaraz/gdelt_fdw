@@ -4,7 +4,7 @@ set -eux && \
 apt-get update && \
 apt-get upgrade -y && \
 apt-get install -y \
-build-essential ca-certificates git postgresql-server-dev-${PG_MAJOR} python-dev && \
+build-essential ca-certificates git postgresql-server-dev-${PG_MAJOR} python-dev python-setuptools && \
 git clone git://github.com/Kozea/Multicorn.git && \
 cd Multicorn && \
 make && make install && \

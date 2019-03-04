@@ -6,6 +6,8 @@ services:
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
     environment:
+      - LANGUAGE=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
       - POSTGRES_PASSWORD=123456
 
   pgadmin:

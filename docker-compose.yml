@@ -22,3 +22,12 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
       - 8080:80
+
+  metabase:
+    image: metabase/metabase
+    volumes:
+      - ./volumes/metabase:/metabase-data
+    environment:
+      - MB_DB_FILE=/metabase-data/metabase.db
+    ports:
+      - 3000:3000

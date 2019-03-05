@@ -41,7 +41,7 @@ CREATE FOREIGN TABLE fdt_film_locations
   actor_3 text )
   SERVER svr_file
   OPTIONS (format 'csv', header 'true',
-  program '/data/myscript.sh -var1 --var2 - "$@" -var3 --var4 -- var5 var6',
+  program '/data/myscript.sh',
   delimiter ',',
   null ''
 );

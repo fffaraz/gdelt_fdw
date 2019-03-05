@@ -1,6 +1,7 @@
 from multicorn import ForeignDataWrapper
 from multicorn.utils import log_to_postgres
 import csv
+import glob
 import zipfile
 
 class GdeltForeignDataWrapper(ForeignDataWrapper):
@@ -13,8 +14,9 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 	def execute(self, quals, columns):
 		# http://data.gdeltproject.org/events/index.html
 		# https://github.com/dialogbox/py_csvgz_fdw
-		with zipfile.ZipFile('/data/20190303.export.CSV.zip') as myzip:
-			with myzip.open('20190303.export.CSV') as stream:
-				reader = csv.reader(stream, delimiter='\t')
-				for line in reader:
-					yield line;
+		for filename in glob.glob('/data/*.export.CSV.zip'):
+			with zipfile.ZipFile(filename) as myzip:
+				with myzip.open(filename[6:-4]) as stream:
+					reader = csv.reader(stream, delimiter='\t')
+					for line in reader:
+						yield line;

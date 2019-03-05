@@ -1,9 +1,10 @@
 from multicorn import ForeignDataWrapper
+from multicorn.utils import log_to_postgres
 
-class ConstantForeignDataWrapper(ForeignDataWrapper):
+class GdeltForeignDataWrapper(ForeignDataWrapper):
 
     def __init__(self, options, columns):
-        super(ConstantForeignDataWrapper, self).__init__(options, columns)
+        super(GdeltForeignDataWrapper, self).__init__(options, columns)
         self.columns = columns
 
     def execute(self, quals, columns):

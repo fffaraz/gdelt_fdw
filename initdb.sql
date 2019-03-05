@@ -1,47 +1,66 @@
-CREATE EXTENSION multicorn;
+CREATE EXTENSION IF NOT EXISTS multicorn;
 
-CREATE SERVER csv_srv foreign data wrapper multicorn options (
-  wrapper 'multicorn.csvfdw.CsvFdw'
+CREATE SERVER gdelt_fdw FOREIGN DATA WRAPPER multicorn OPTIONS (
+  wrapper 'gdelt_fdw.GdeltForeignDataWrapper'
 );
 
-CREATE FOREIGN TABLE csvtest (
-  year numeric,
-  make character varying,
-  model character varying,
-  length numeric
-) server csv_srv options (
-  filename '/data/test.csv',
-  skip_header '1',
-  delimiter ','
-);
-
-CREATE SERVER myfdw_srv foreign data wrapper multicorn options (
-  wrapper 'myfdw.ConstantForeignDataWrapper'
-);
-
-CREATE FOREIGN TABLE constanttable (
-    test character varying,
-    test2 character varying
-) server myfdw_srv;
-
-CREATE EXTENSION file_fdw;
-CREATE SERVER svr_file FOREIGN DATA WRAPPER file_fdw;
-
-CREATE FOREIGN TABLE fdt_film_locations
-  (title text ,
-  release_year integer ,
-  locations text ,
-  fun_facts text ,
-  production_company text ,
-  distributor text ,
-  director text ,
-  writer text ,
-  actor_1 text ,
-  actor_2 text ,
-  actor_3 text )
-  SERVER svr_file
-  OPTIONS (format 'csv', header 'true',
-  program '/data/myscript.sh',
-  delimiter ',',
-  null ''
-);
+CREATE FOREIGN TABLE IF NOT EXISTS gdeltevents (
+  GLOBALEVENTID integer,
+  SQLDATE integer,
+  MonthYear integer,
+  Year integer,
+  FractionDate float,
+  Actor1Code varchar,
+  Actor1Name varchar,
+  Actor1CountryCode varchar,
+  Actor1KnownGroupCode varchar,
+  Actor1EthnicCode varchar,
+  Actor1Religion1Code varchar,
+  Actor1Religion2Code varchar,
+  Actor1Type1Code varchar,
+  Actor1Type2Code varchar,
+  Actor1Type3Code varchar,
+  Actor2Code varchar,
+  Actor2Name varchar,
+  Actor2CountryCode varchar,
+  Actor2KnownGroupCode varchar,
+  Actor2EthnicCode varchar,
+  Actor2Religion1Code varchar,
+  Actor2Religion2Code varchar,
+  Actor2Type1Code varchar,
+  Actor2Type2Code varchar,
+  Actor2Type3Code varchar,
+  IsRootEvent integer,
+  EventCode varchar,
+  EventBaseCode varchar,
+  EventRootCode varchar,
+  QuadClass integer,
+  GoldsteinScale float,
+  NumMentions integer,
+  NumSources integer,
+  NumArticles integer,
+  AvgTone float,
+  Actor1Geo_Type integer,
+  Actor1Geo_FullName varchar,
+  Actor1Geo_CountryCode varchar,
+  Actor1Geo_ADM1Code varchar,
+  Actor1Geo_Lat float,
+  Actor1Geo_Long float,
+  Actor1Geo_FeatureID varchar,
+  Actor2Geo_Type integer,
+  Actor2Geo_FullName varchar,
+  Actor2Geo_CountryCode varchar,
+  Actor2Geo_ADM1Code varchar,
+  Actor2Geo_Lat float,
+  Actor2Geo_Long float,
+  Actor2Geo_FeatureID varchar,
+  ActionGeo_Type integer,
+  ActionGeo_FullName varchar,
+  ActionGeo_CountryCode varchar,
+  ActionGeo_ADM1Code varchar,
+  ActionGeo_Lat float,
+  ActionGeo_Long float,
+  ActionGeo_FeatureID varchar,
+  DATEADDED integer,
+  SOURCEURL varchar,
+) SERVER gdelt_fdw;

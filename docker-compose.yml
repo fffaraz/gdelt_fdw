@@ -5,8 +5,8 @@ services:
     build: .
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
+      - ./volumes/data:/data
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
-      - ./data:/data
     environment:
       - LANG=
       - POSTGRES_PASSWORD=123456

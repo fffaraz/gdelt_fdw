@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS multicorn;
 
-CREATE SERVER gdelt_fdw FOREIGN DATA WRAPPER multicorn options (
+CREATE SERVER gdelt_fdw FOREIGN DATA WRAPPER multicorn OPTIONS (
   wrapper 'gdelt_fdw.GdeltForeignDataWrapper'
 );
 
@@ -62,5 +62,5 @@ CREATE FOREIGN TABLE IF NOT EXISTS gdeltevents (
   ActionGeo_Long float,
   ActionGeo_FeatureID varchar,
   DATEADDED integer,
-  SOURCEURL varchar,
-) server gdelt_fdw;
+  SOURCEURL varchar
+) SERVER gdelt_fdw;

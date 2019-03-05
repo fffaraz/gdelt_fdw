@@ -55,7 +55,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		if not filedates:
 			files = glob.glob('/data/*.export.CSV.zip')
 			for file in files:
-				filedates.append(file[6:-15])
+				filedates.append(datetime.datetime.strptime(file[6:-15], '%Y%m%d'))
 
 		for filedate in list(set(filedates)):
 			filepath = self.download(filedate)

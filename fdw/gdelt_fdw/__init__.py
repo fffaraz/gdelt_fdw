@@ -4,7 +4,7 @@ import csv
 import datetime
 import glob
 import os.path
-import urllib.request
+import urllib
 import zipfile
 
 class GdeltForeignDataWrapper(ForeignDataWrapper):
@@ -19,7 +19,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		todayfile = '/data/' + today + '.export.CSV.zip'
 		if not os.path.exists(todayfile):
 			url = 'http://data.gdeltproject.org/events/' + today + '.export.CSV.zip'
-			urllib.request.urlretrieve(url, todayfile)
+			urllib.urlretrieve(url, todayfile)
 		files = glob.glob('/data/*.export.CSV.zip')
 		for filename in files:
 			with zipfile.ZipFile(filename) as myzip:

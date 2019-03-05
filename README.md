@@ -1,5 +1,5 @@
 # GDELT_FDW
-Dockerized Multicorn PostgreSQL Foreign Data Wrapper (FDW) Library for Retrieving [GDELT](https://www.gdeltproject.org/) events database.
+Dockerized Multicorn PostgreSQL Foreign Data Wrapper (FDW) for Retrieving [GDELT](https://www.gdeltproject.org/) events database.
 
 ### How to Run
 ```

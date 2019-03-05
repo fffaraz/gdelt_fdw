@@ -19,4 +19,4 @@ services:
       - PGADMIN_DEFAULT_EMAIL=user@domain.com
       - PGADMIN_DEFAULT_PASSWORD=123456
     ports:
-      - 8097:80
+      - 8080:80

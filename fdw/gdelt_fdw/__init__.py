@@ -16,9 +16,10 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.columns = columns
 
 	def download(self, sqldate):
-		filename = '/data/' + str(sqldate) + '.export.CSV.zip'
+		strdate = sqldate.strftime('%Y%m%d')
+		filename = '/data/' + strdate + '.export.CSV.zip'
 		if not os.path.exists(filename):
-			url = 'http://data.gdeltproject.org/events/' + str(sqldate) + '.export.CSV.zip'
+			url = 'http://data.gdeltproject.org/events/' + strdate+ '.export.CSV.zip'
 			urllib.urlretrieve(url, filename)
 			if os.path.getsize(filename) < 1:
 				os.remove(filename)
@@ -26,17 +27,32 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		return filename
 
 	def execute(self, quals, columns):
-		mindate = '20130401'
+		mindate = datetime.strptime('20130401', '%Y%m%d')
+		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
+		startdate = mindate
+		enddate = maxdate
+		checkrange = false
 		filedates = []
 		for qual in quals:
-			if qual.field_name == 'sqldate' and qual.operator == '=':
-				filedates.append(qual.value)
-				break
-		##for d in xrange(1,10):
-		##	yesterday = datetime.datetime.now() - datetime.timedelta(days = d)
-		##	self.download(yesterday.strftime('%Y%m%d'))
+			if qual.field_name == 'sqldate':
+				if qual.operator == '=':
+					filedates.append(datetime.strptime(qual.value, '%Y%m%d'))
+				if qual.operator == '>':
+					checkrange = true
+					testdate = datetime.strptime(qual.value, '%Y%m%d')
+					if startdate < testdate:
+						startdate = testdate
+				if qual.operator == '<':
+					checkrange = true
+					testdate = datetime.strptime(qual.value, '%Y%m%d')
+					if enddate > testdate:
+						enddate = testdate
+		if checkrange:
+			delta = enddate - startdate
+			for d in range(delta.days + 1):
+				filedates.append(startdate + datetime.timedelta(d))
 		##files = glob.glob('/data/*.export.CSV.zip')
-		for filedate in filedates:
+		for filedate in list(set(filedates)):
 			filepath = self.download(filedate)
 			if len(filepath) > 0:
 				with zipfile.ZipFile(filepath) as myzip:

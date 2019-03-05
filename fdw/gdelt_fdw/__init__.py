@@ -37,7 +37,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		filedates = []
 		for qual in quals:
 			if qual.field_name == 'sqldate':
-				if qual.operator == 'ANY' or qual.operator == 'ALL':
+				if qual.list_any_or_all:
 					for value in qual.value:
 						filedates.append(datetime.datetime.strptime(str(value), '%Y%m%d'))
 					continue

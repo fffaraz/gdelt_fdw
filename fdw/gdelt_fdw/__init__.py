@@ -15,10 +15,13 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.columns = columns
 
 	def download(self, sqldate):
-		strdate = sqldate.strftime('%Y%m%d')
+		if isinstance(sqldate, datetime.datetime):
+			strdate = sqldate.strftime('%Y%m%d')
+		else:
+			strdate = str(sqldate)
 		filename = '/data/' + strdate + '.export.CSV.zip'
 		if not os.path.exists(filename):
-			url = 'http://data.gdeltproject.org/events/' + strdate+ '.export.CSV.zip'
+			url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'
 			urllib.urlretrieve(url, filename)
 			if os.path.getsize(filename) < 1:
 				os.remove(filename)
@@ -55,7 +58,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		if not filedates:
 			files = glob.glob('/data/*.export.CSV.zip')
 			for file in files:
-				filedates.append(datetime.datetime.strptime(file[6:-15], '%Y%m%d'))
+				filedates.append(file[6:-15])
 
 		for filedate in list(set(filedates)):
 			filepath = self.download(filedate)

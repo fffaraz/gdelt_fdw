@@ -31,8 +31,6 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 	def execute(self, quals, columns):
 		mindate = datetime.datetime.strptime('20130401', '%Y%m%d')
 		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
-		startdate = mindate
-		enddate = maxdate
 		checkrange = False
 		filedates = []
 		for qual in quals:
@@ -46,17 +44,17 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 					filedates.append(sqldate)
 				if qual.operator == '>' or qual.operator == '>=':
 					checkrange = True
-					if startdate < sqldate:
-						startdate = sqldate
+					if mindate < sqldate:
+						mindate = sqldate
 				if qual.operator == '<' or qual.operator == '<=':
 					checkrange = True
-					if enddate > sqldate:
-						enddate = sqldate
+					if maxdate > sqldate:
+						maxdate = sqldate
 
 		if checkrange:
-			delta = enddate - startdate
+			delta = maxdate - mindate
 			for d in range(delta.days + 1):
-				filedates.append(startdate + datetime.timedelta(d))
+				filedates.append(mindate + datetime.timedelta(d))
 
 		if not filedates:
 			files = glob.glob('/data/*.export.CSV.zip')

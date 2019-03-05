@@ -15,7 +15,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.options = options
 		self.columns = columns
 
-	def download(self, strdate)
+	def download(self, strdate):
 		filename = '/data/' + strdate + '.export.CSV.zip'
 		if not os.path.exists(filename):
 			url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'

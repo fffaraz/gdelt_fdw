@@ -1,6 +1,5 @@
 from multicorn import ForeignDataWrapper
 from multicorn.utils import log_to_postgres
-from datetime import datetime, timedelta
 import csv
 import datetime
 import glob
@@ -27,7 +26,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		return filename
 
 	def execute(self, quals, columns):
-		mindate = datetime.strptime('20130401', '%Y%m%d')
+		mindate = datetime.datetime.strptime('20130401', '%Y%m%d')
 		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
 		startdate = mindate
 		enddate = maxdate
@@ -36,15 +35,15 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		for qual in quals:
 			if qual.field_name == 'sqldate':
 				if qual.operator == '=':
-					filedates.append(datetime.strptime(qual.value, '%Y%m%d'))
+					filedates.append(datetime.datetime.strptime(qual.value, '%Y%m%d'))
 				if qual.operator == '>':
 					checkrange = true
-					testdate = datetime.strptime(qual.value, '%Y%m%d')
+					testdate = datetime.datetime.strptime(qual.value, '%Y%m%d')
 					if startdate < testdate:
 						startdate = testdate
 				if qual.operator == '<':
 					checkrange = true
-					testdate = datetime.strptime(qual.value, '%Y%m%d')
+					testdate = datetime.datetime.strptime(qual.value, '%Y%m%d')
 					if enddate > testdate:
 						enddate = testdate
 		if checkrange:

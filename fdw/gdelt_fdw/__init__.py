@@ -37,18 +37,21 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		filedates = []
 		for qual in quals:
 			if qual.field_name == 'sqldate':
-				if qual.operator == '=':
-					filedates.append(datetime.datetime.strptime(str(qual.value), '%Y%m%d'))
+				if qual.operator == 'ANY' or qual.operator == 'ALL':
+					for value in qual.value:
+						filedates.append(datetime.datetime.strptime(str(value), '%Y%m%d'))
+					continue
+				sqldate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
+				if qual.operator == '=' or qual.operator == '~~':
+					filedates.append(sqldate)
 				if qual.operator == '>' or qual.operator == '>=':
 					checkrange = True
-					testdate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
-					if startdate < testdate:
-						startdate = testdate
+					if startdate < sqldate:
+						startdate = sqldate
 				if qual.operator == '<' or qual.operator == '<=':
 					checkrange = True
-					testdate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
-					if enddate > testdate:
-						enddate = testdate
+					if enddate > sqldate:
+						enddate = sqldate
 
 		if checkrange:
 			delta = enddate - startdate

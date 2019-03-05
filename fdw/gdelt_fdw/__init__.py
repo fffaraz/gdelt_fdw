@@ -15,7 +15,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.columns = columns
 
 	def execute(self, quals, columns):
-		today = datetime.date.today('%Y%m%d').strftime()
+		today = datetime.date.today().strftime('%Y%m%d')
 		todayfile = '/data/' + today + '.export.CSV.zip'
 		if not os.path.exists(todayfile):
 			url = 'http://data.gdeltproject.org/events/' + today + '.export.CSV.zip'

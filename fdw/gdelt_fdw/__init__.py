@@ -1,5 +1,6 @@
 from multicorn import ForeignDataWrapper
 from multicorn.utils import log_to_postgres
+from datetime import datetime, timedelta
 import csv
 import datetime
 import glob
@@ -15,7 +16,8 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.columns = columns
 
 	def execute(self, quals, columns):
-		today = datetime.date.today().strftime('%Y%m%d')
+		yesterday = datetime.datetime.now() - datetime.timedelta(days = 1)
+		today = yesterday.strftime('%Y%m%d')
 		todayfile = '/data/' + today + '.export.CSV.zip'
 		if not os.path.exists(todayfile):
 			url = 'http://data.gdeltproject.org/events/' + today + '.export.CSV.zip'

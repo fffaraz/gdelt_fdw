@@ -30,19 +30,19 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
 		startdate = mindate
 		enddate = maxdate
-		checkrange = false
+		checkrange = False
 		filedates = []
 		for qual in quals:
 			if qual.field_name == 'sqldate':
 				if qual.operator == '=':
 					filedates.append(datetime.datetime.strptime(qual.value, '%Y%m%d'))
 				if qual.operator == '>':
-					checkrange = true
+					checkrange = True
 					testdate = datetime.datetime.strptime(qual.value, '%Y%m%d')
 					if startdate < testdate:
 						startdate = testdate
 				if qual.operator == '<':
-					checkrange = true
+					checkrange = True
 					testdate = datetime.datetime.strptime(qual.value, '%Y%m%d')
 					if enddate > testdate:
 						enddate = testdate

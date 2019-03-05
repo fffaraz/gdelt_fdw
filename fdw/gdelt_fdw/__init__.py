@@ -75,4 +75,4 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 									line.append(None)
 								else:
 									line.append(field)
-							yield line
+							yield { i : line[i] for i in range(0, len(line)) }

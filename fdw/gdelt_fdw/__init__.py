@@ -36,21 +36,27 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 			if qual.field_name == 'sqldate':
 				if qual.operator == '=':
 					filedates.append(datetime.datetime.strptime(str(qual.value), '%Y%m%d'))
-				if qual.operator == '>':
+				if qual.operator == '>' or qual.operator == '>=':
 					checkrange = True
 					testdate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
 					if startdate < testdate:
 						startdate = testdate
-				if qual.operator == '<':
+				if qual.operator == '<' or qual.operator == '<=':
 					checkrange = True
 					testdate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
 					if enddate > testdate:
 						enddate = testdate
+
 		if checkrange:
 			delta = enddate - startdate
 			for d in range(delta.days + 1):
 				filedates.append(startdate + datetime.timedelta(d))
-		##files = glob.glob('/data/*.export.CSV.zip')
+
+		if not filedates:
+			files = glob.glob('/data/*.export.CSV.zip')
+			for file in files:
+				filedates.append(file[6:-15])
+
 		for filedate in list(set(filedates)):
 			filepath = self.download(filedate)
 			if len(filepath) > 0:

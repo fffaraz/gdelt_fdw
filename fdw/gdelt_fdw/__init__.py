@@ -17,11 +17,11 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 
 	def execute(self, quals, columns):
 		yesterday = datetime.datetime.now() - datetime.timedelta(days = 1)
-		today = yesterday.strftime('%Y%m%d')
-		todayfile = '/data/' + today + '.export.CSV.zip'
-		if not os.path.exists(todayfile):
-			url = 'http://data.gdeltproject.org/events/' + today + '.export.CSV.zip'
-			urllib.urlretrieve(url, todayfile)
+		lastday = yesterday.strftime('%Y%m%d')
+		lastdayfile = '/data/' + lastday + '.export.CSV.zip'
+		if not os.path.exists(lastdayfile):
+			url = 'http://data.gdeltproject.org/events/' + lastday + '.export.CSV.zip'
+			urllib.urlretrieve(url, lastdayfile)
 		files = glob.glob('/data/*.export.CSV.zip')
 		for filename in files:
 			with zipfile.ZipFile(filename) as myzip:

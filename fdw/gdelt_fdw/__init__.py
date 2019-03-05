@@ -15,13 +15,18 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		self.options = options
 		self.columns = columns
 
+	def download(self, strdate)
+		filename = '/data/' + strdate + '.export.CSV.zip'
+		if not os.path.exists(filename):
+			url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'
+			urllib.urlretrieve(url, filename)
+			if os.path.getsize(filename) < 1:
+				os.remove(filename)
+
 	def execute(self, quals, columns):
-		yesterday = datetime.datetime.now() - datetime.timedelta(days = 1)
-		lastday = yesterday.strftime('%Y%m%d')
-		lastdayfile = '/data/' + lastday + '.export.CSV.zip'
-		if not os.path.exists(lastdayfile):
-			url = 'http://data.gdeltproject.org/events/' + lastday + '.export.CSV.zip'
-			urllib.urlretrieve(url, lastdayfile)
+		for d in xrange(1,10):
+			yesterday = datetime.datetime.now() - datetime.timedelta(days = d)
+			self.download(yesterday.strftime('%Y%m%d'))
 		files = glob.glob('/data/*.export.CSV.zip')
 		for filename in files:
 			with zipfile.ZipFile(filename) as myzip:

@@ -68,4 +68,4 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 					with myzip.open(filepath[6:-4]) as stream:
 						reader = csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
 						for row in reader:
-							yield [field if len(field) > 0 else None for field in row]
+							yield [field if field != '' else None for field in row]

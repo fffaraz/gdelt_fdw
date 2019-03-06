@@ -39,3 +39,5 @@ services:
     volumes:
       - ./api:/var/www/html
       - ./volumes/data:/data
+    ports:
+      - 8081:80

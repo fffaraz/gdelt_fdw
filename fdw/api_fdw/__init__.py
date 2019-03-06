@@ -6,7 +6,7 @@ import urllib2
 class ApiForeignDataWrapper(ForeignDataWrapper):
 
 	def __init__(self, options, columns):
-		super(GdeltForeignDataWrapper, self).__init__(options, columns)
+		super(ApiForeignDataWrapper, self).__init__(options, columns)
 		self.options = options
 		self.columns = columns
 		self.url = options["api"]

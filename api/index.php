@@ -1,5 +1,7 @@
 <?php
 require 'include.php';
+
+ini_set('memory_limit',-1);
 set_time_limit(0);
 ob_end_flush();
 

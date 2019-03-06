@@ -28,6 +28,14 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 				return ''
 		return filename
 
+	@staticmethod
+	def cleanfield(field):
+		if field == '':
+			return None
+		if len(field) < 6 and field[0].isdigit():
+			return field.replace('#', '')
+		return field
+
 	def execute(self, quals, columns):
 		mindate = datetime.datetime.strptime('20130401', '%Y%m%d')
 		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
@@ -68,4 +76,4 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 					with myzip.open(filepath[6:-4]) as stream:
 						reader = csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
 						for row in reader:
-							yield [field.replace('#', '') if field != '' else None for field in row]
+							yield [cleanfield(field) for field in row]

@@ -38,3 +38,4 @@ services:
     restart: always
     volumes:
       - ./api:/var/www/html
+      - ./volumes/data:/data

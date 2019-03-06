@@ -13,6 +13,6 @@ class ApiForeignDataWrapper(ForeignDataWrapper):
 
 	def execute(self, quals, columns):
 		contents = urllib2.urlopen(self.url).read()
-		reader = csv.reader(contents, delimiter='\t')
+		reader = csv.reader(contents.splitlines(), delimiter='\t')
 		for row in reader:
 			yield row

@@ -1,4 +1,5 @@
 <?php
+require 'include.php';
 set_time_limit(0);
 ob_end_flush();
 
@@ -29,5 +30,5 @@ if(is_resource($zip))
 }
 else
 {
-	echo "Error: $zip";
+	echo "Error: " . zipFileErrMsg($zip);
 }

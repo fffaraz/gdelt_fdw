@@ -8,8 +8,8 @@ if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdel
 $zip = zip_open($filename);
 if($zip)
 {
-	$zip_entry = zip_read($zip)
-	if(zip_entry_open($zip, $zip_entry, 'r'))
+	$zip_entry = zip_read($zip);
+	if($zip_entry && zip_entry_open($zip, $zip_entry, 'r'))
 	{
 		$buffer = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 		zip_entry_close($zip_entry);

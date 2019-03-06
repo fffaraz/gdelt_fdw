@@ -23,6 +23,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		if not os.path.exists(filename):
 			url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'
 			urllib.urlretrieve(url, filename)
+			os.chmod(filename, 666)
 			if os.path.getsize(filename) < 1:
 				os.remove(filename)
 				return ''

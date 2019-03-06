@@ -8,3 +8,11 @@ setup(
 	license='Postgresql',
 	packages=['gdelt_fdw']
 )
+
+setup(
+	name='api_fdw',
+	version='1.0.0',
+	author='Faraz Fallahi <fffaraz@gmail.com>',
+	license='Postgresql',
+	packages=['api_fdw']
+)

@@ -25,9 +25,16 @@ services:
 
   metabase:
     image: metabase/metabase
+    restart: always
     volumes:
       - ./volumes/metabase:/metabase-data
     environment:
       - MB_DB_FILE=/metabase-data/metabase.db
     ports:
       - 3000:3000
+
+  api:
+    image: nginx
+    restart: always
+    volumes:
+      - ./api:/usr/share/nginx/html:ro

@@ -9,7 +9,7 @@ class ApiForeignDataWrapper(ForeignDataWrapper):
 		super(ApiForeignDataWrapper, self).__init__(options, columns)
 		self.options = options
 		self.columns = columns
-		self.url = options["api"]
+		self.url = options["url"]
 
 	def execute(self, quals, columns):
 		contents = urllib2.urlopen(self.url).read()

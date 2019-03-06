@@ -13,12 +13,12 @@ class ApiForeignDataWrapper(ForeignDataWrapper):
 		self.url = options["url"]
 
 	def execute(self, quals, columns):
-		params1 = urllib.urlencode(self.options)
-		params2 = 'columns1="' + ','.join([str(x) for x in self.columns]) + '"'
-		params3 = 'columns2="' + ','.join([str(x) for x in columns]) + '"'
-		params = params1 + '&' + params2 + '&' + params3
+		param1 = urllib.urlencode(self.options)
+		param2 = 'colstable=' + ','.join(self.columns)
+		param3 = 'colsquery=' + ','.join(columns)
+		param4 = 'quals=' + ','.join([str(qual.field_name) + str(qual.operator) + str(qual.value) for qual in quals])
+		params = param1 + '&' + param2 + '&' + param3 + '&' + param4
 		url = self.url + '?' + params
-		log_to_postgres(url)
 		contents = urllib2.urlopen(url).read()
 		reader = csv.reader(contents.splitlines(), delimiter='\t', quoting=csv.QUOTE_NONE)
 		for row in reader:

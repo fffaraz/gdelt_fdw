@@ -5,7 +5,7 @@ ini_set('memory_limit',-1);
 set_time_limit(0);
 ob_end_flush();
 
-$sqldate = '20190305';
+$sqldate = '20190301';
 $filename = '/data/' . $sqldate . '.export.CSV.zip';
 if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdeltproject.org/events/' . $sqldate . '.export.CSV.zip', 'r'));
 $zip = zip_open($filename);

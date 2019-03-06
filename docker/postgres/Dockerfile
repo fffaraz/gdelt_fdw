@@ -10,5 +10,5 @@ cd Multicorn && \
 make && make install && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
-COPY ../../fdw /fdw
+COPY fdw /fdw
 RUN cd /fdw && python setup.py install

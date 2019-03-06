@@ -34,7 +34,7 @@ services:
       - 3000:3000
 
   api:
-    image: ./docker/php
+    build: ./docker/php
     restart: always
     volumes:
       - ./api:/var/www/html

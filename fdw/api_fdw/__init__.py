@@ -19,6 +19,5 @@ class ApiForeignDataWrapper(ForeignDataWrapper):
 		param4 = 'quals=' + ','.join([str(qual.field_name) + str(qual.operator) + str(qual.value) for qual in quals])
 		params = self.param1 + '&' + self.param2 + '&' + param3 + '&' + param4
 		url = self.url + '?method=execute&' + params
-		reader = csv.reader(urllib2.urlopen(url), delimiter='\t', quoting=csv.QUOTE_NONE)
-		for row in reader:
+		for row in csv.reader(urllib2.urlopen(url), delimiter='\t', quoting=csv.QUOTE_NONE):
 			yield [field if field != '' else None for field in row]

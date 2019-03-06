@@ -64,8 +64,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 				filedates.append(mindate + datetime.timedelta(d))
 
 		if not filedates:
-			files = glob.glob('/data/*.export.CSV.zip')
-			for file in files:
+			for file in glob.glob('/data/*.export.CSV.zip'):
 				filedates.append(file[6:-15])
 
 		for filedate in list(set(filedates)):
@@ -73,6 +72,5 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 			if len(filepath) > 0:
 				with zipfile.ZipFile(filepath) as myzip:
 					with myzip.open(filepath[6:-4]) as stream:
-						reader = csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
-						for row in reader:
+						for row in csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE):
 							yield [self.cleanfield(field) for field in row]

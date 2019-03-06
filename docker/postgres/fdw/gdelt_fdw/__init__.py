@@ -68,7 +68,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 			for file in glob.glob('/data/*.export.CSV.zip'):
 				filedates.append(file[6:-15])
 
-		for filedate in list(set(filedates)):
+		for filedate in list(set(filedates)).sort():
 			filepath = self.download(filedate)
 			if len(filepath) > 0:
 				with zipfile.ZipFile(filepath) as myzip:

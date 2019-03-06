@@ -27,3 +27,7 @@ if(is_resource($zip))
 	}
     zip_close($zip);
 }
+else
+{
+	echo "Error: $zip";
+}

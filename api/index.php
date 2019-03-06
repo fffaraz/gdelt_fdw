@@ -6,7 +6,7 @@ $sqldate = '20190305';
 $filename = '/data/' . $sqldate . '.export.CSV.zip';
 if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdeltproject.org/events/' . $sqldate . '.export.CSV.zip', 'r'));
 $zip = zip_open($filename);
-if($zip)
+if(is_resource($zip))
 {
 	$zip_entry = zip_read($zip);
 	if($zip_entry && zip_entry_open($zip, $zip_entry, 'r'))

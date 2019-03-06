@@ -28,8 +28,7 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 				return ''
 		return filename
 
-	@staticmethod
-	def cleanfield(field):
+	def cleanfield(self, field):
 		if field == '':
 			return None
 		if len(field) < 6 and field[0].isdigit():
@@ -76,4 +75,4 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 					with myzip.open(filepath[6:-4]) as stream:
 						reader = csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
 						for row in reader:
-							yield [cleanfield(field) for field in row]
+							yield [self.cleanfield(field) for field in row]

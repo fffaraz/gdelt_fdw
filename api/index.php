@@ -1,7 +1,10 @@
 <?php
 require 'include.php';
 
-ini_set('memory_limit',-1);
+// https://github.com/googleapis/google-cloud-php-bigquery
+// https://cloud.google.com/bigquery/docs/reference/libraries#client-libraries-install-php
+
+ini_set('memory_limit', -1);
 set_time_limit(0);
 ob_end_flush();
 

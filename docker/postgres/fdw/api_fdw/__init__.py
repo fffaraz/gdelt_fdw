@@ -1,8 +1,11 @@
 from multicorn import ForeignDataWrapper
 from multicorn.utils import log_to_postgres
+from logging import ERROR, WARNING
+
+import codecs
 import csv
-import urllib
-import urllib2
+import urllib.parse
+import urllib.request
 
 class ApiForeignDataWrapper(ForeignDataWrapper):
 
@@ -10,14 +13,11 @@ class ApiForeignDataWrapper(ForeignDataWrapper):
 		super(ApiForeignDataWrapper, self).__init__(options, columns)
 		self.options = options
 		self.columns = columns
-		self.url = options["url"]
-		self.param1 = urllib.urlencode(self.options)
-		self.param2 = 'colstable=' + ','.join(self.columns)
+		self.url = options['url']
+		self.table = options['table']
 
 	def execute(self, quals, columns):
-		param3 = 'colsquery=' + ','.join(columns)
-		param4 = 'quals=' + ','.join([str(qual.field_name) + str(qual.operator) + str(qual.value) for qual in quals])
-		params = self.param1 + '&' + self.param2 + '&' + param3 + '&' + param4
-		url = self.url + '?method=execute&' + params
-		for row in csv.reader(urllib2.urlopen(url), delimiter='\t', quoting=csv.QUOTE_NONE):
+		data = {'method': 'execute', 'url': self.url, 'table': self.table, 'options': self.options, 'all_columns': self.columns, 'quals': quals, 'query_columns': columns}
+		url = self.url + '?' + urllib.parse.urlencode(data)
+		for row in csv.reader(codecs.iterdecode(urllib.request.urlopen(url), 'utf-8'), delimiter='\t', quoting=csv.QUOTE_NONE):
 			yield [field if field != '' else None for field in row]

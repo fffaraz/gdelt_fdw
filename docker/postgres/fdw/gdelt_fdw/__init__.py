@@ -1,10 +1,13 @@
 from multicorn import ForeignDataWrapper
 from multicorn.utils import log_to_postgres
+from logging import ERROR, WARNING
+
+import codecs
 import csv
 import datetime
 import glob
 import os.path
-import urllib
+import urllib.request
 import zipfile
 
 class GdeltForeignDataWrapper(ForeignDataWrapper):
@@ -13,20 +16,35 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		super(GdeltForeignDataWrapper, self).__init__(options, columns)
 		self.options = options
 		self.columns = columns
+		self.table = options['table']
 
-	def download(self, sqldate):
-		if isinstance(sqldate, datetime.datetime):
-			strdate = sqldate.strftime('%Y%m%d')
+	def download(self, dateadded):
+		if isinstance(dateadded, datetime.datetime):
+			strdate = dateadded.strftime('%Y%m%d')
 		else:
-			strdate = str(sqldate)
-		filename = '/data/' + strdate + '.export.CSV.zip'
+			strdate = str(dateadded)
+
+		if(self.table == 'gdeltv2_gkg'):
+			filename = '/data/' + strdate + '.gkg.csv.zip'
+		else:
+			filename = '/data/' + strdate + '.export.CSV.zip'
+
 		if not os.path.exists(filename):
-			url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'
-			urllib.urlretrieve(url, filename)
-			os.chmod(filename, 0666)
+			if(len(strdate) > 8):
+				if(self.table == 'gdeltv2_gkg'):
+					url = 'http://data.gdeltproject.org/gdeltv2/' + strdate + '.gkg.csv.zip'
+				else:
+					url = 'http://data.gdeltproject.org/gdeltv2/' + strdate + '.export.CSV.zip'
+			else:
+				url = 'http://data.gdeltproject.org/events/' + strdate + '.export.CSV.zip'
+
+			urllib.request.urlretrieve(url, filename)
+			os.chmod(filename, 0o666)
+
 			if os.path.getsize(filename) < 1:
 				os.remove(filename)
 				return ''
+
 		return filename
 
 	def cleanfield(self, field):
@@ -41,37 +59,42 @@ class GdeltForeignDataWrapper(ForeignDataWrapper):
 		maxdate = datetime.datetime.now() - datetime.timedelta(days = 1)
 		checkrange = False
 		filedates = []
+
 		for qual in quals:
-			if qual.field_name == 'sqldate':
+			if qual.field_name.lower() == 'dateadded' or qual.field_name.lower() == 'date':
 				if qual.list_any_or_all:
 					for value in qual.value:
 						filedates.append(datetime.datetime.strptime(str(value), '%Y%m%d'))
 					continue
-				sqldate = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
 				if qual.operator == '=' or qual.operator == '~~':
-					filedates.append(sqldate)
+					filedates.append(str(qual.value))
+					continue
+				dateadded = datetime.datetime.strptime(str(qual.value), '%Y%m%d')
 				if qual.operator == '>' or qual.operator == '>=':
 					checkrange = True
-					if mindate < sqldate:
-						mindate = sqldate
+					if mindate < dateadded:
+						mindate = dateadded
 				if qual.operator == '<' or qual.operator == '<=':
 					checkrange = True
-					if maxdate > sqldate:
-						maxdate = sqldate
+					if maxdate > dateadded:
+						maxdate = dateadded
 
 		if checkrange:
 			delta = maxdate - mindate
 			for d in range(delta.days + 1):
 				filedates.append(mindate + datetime.timedelta(d))
 
-		if not filedates:
-			for file in glob.glob('/data/*.export.CSV.zip'):
-				filedates.append(file[6:-15])
+		#if not filedates:
+		#	for file in glob.glob('/data/*.export.CSV.zip'):
+		#		filedates.append(file[6:-15])
+
+		log_to_postgres("gdelt_fdw filedates: '%s'" % ', '.join(map(str, filedates)), WARNING)
 
 		for filedate in sorted(list(set(filedates))):
 			filepath = self.download(filedate)
 			if len(filepath) > 0:
 				with zipfile.ZipFile(filepath) as myzip:
-					with myzip.open(filepath[6:-4]) as stream:
-						for row in csv.reader(stream, delimiter='\t', quoting=csv.QUOTE_NONE):
+					csvname = myzip.namelist()[0];
+					with myzip.open(csvname) as stream:
+						for row in csv.reader(codecs.iterdecode(stream, 'utf-8'), delimiter='\t', quoting=csv.QUOTE_NONE):
 							yield [self.cleanfield(field) for field in row]

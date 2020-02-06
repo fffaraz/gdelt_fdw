@@ -20,6 +20,9 @@ $query = parseQuery($query);
 
 file_put_contents('/app/data/last_query.log', json_encode($query, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
-test($query);
+//test($query);
+
+$dates = getDates($query);
+foreach ($dates as $date) parseDate($date);
 
 //parseDate(20190911);

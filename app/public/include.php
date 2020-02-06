@@ -90,6 +90,24 @@ function test($query)
 	die();
 }
 
+function getDates($query)
+{
+    $result = [];
+    foreach ($query['quals'] as $qual)
+    {
+        if($qual[0] == 'dateadded' && $qual[1] == '=') $result[] = $qual[3];
+        // TODO: add more cases (date range)
+    }
+    return $result;
+}
+
+function parseDate($dateadded)
+{
+    $filename = '/app/data/' . $dateadded . '.export.CSV.zip';
+    if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdeltproject.org/events/' . $dateadded . '.export.CSV.zip', 'r'));
+    return parseFile($filename);
+}
+
 function parseFile($filename)
 {
 	$zip = zip_open($filename);
@@ -116,13 +134,6 @@ function parseFile($filename)
 		}
 	}
 	zip_close($zip);
-}
-
-function parseDate($dateadded)
-{
-	$filename = '/app/data/' . $dateadded . '.export.CSV.zip';
-	if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdeltproject.org/events/' . $dateadded . '.export.CSV.zip', 'r'));
-	return parseFile($filename);
 }
 
 function parseAll()

@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   db:
-    build: ./docker/postgres
+    build: ./docker
     restart: always
     shm_size: 1G
     volumes:
@@ -11,35 +11,30 @@ services:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
     environment:
       - LANG=
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=msdfhfg45643324sdsdasqq2ghxp1ab7
 
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    volumes:
-      - ./volumes/pgadmin:/var/lib/pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=user@domain.com
-      - PGADMIN_DEFAULT_PASSWORD=123456
-    ports:
-      - 8080:80
-
-  metabase:
-    image: metabase/metabase
-    restart: always
-    volumes:
-      - ./volumes/metabase:/metabase-data
-    environment:
-      - MB_DB_FILE=/metabase-data/metabase.db
-    ports:
-      - 3000:3000
-
-  api:
+  app:
     image: fffaraz/php
     restart: always
     volumes:
-      - ./api:/app
+      - ./app:/app
     depends_on:
       - db
+    networks:
+      - default
+      - isolated_nw
     ports:
       - 8081:80
+
+  adminer: # https://github.com/vrana/adminer
+      image: adminer # https://github.com/TimWolla/docker-adminer
+      restart: always
+      depends_on:
+        - db
+      logging:
+        driver: "none"
+      networks:
+        - default
+        - isolated_nw
+      ports:
+        - 8082:8080

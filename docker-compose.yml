@@ -1,5 +1,9 @@
 version: '3.5'
 
+networks:
+  isolated_nw:
+    external: true
+
 services:
   db:
     build: ./docker

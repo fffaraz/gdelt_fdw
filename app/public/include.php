@@ -47,6 +47,7 @@ function parseQuery($input)
 	$result['table'] = $result['options']['table'];
 
 	$all_columns = $input['all_columns'];
+	$result['all_columns_old'] = $all_columns;
 	$all_columns = substr($all_columns, strlen('OrderedDict(['));
 	$all_columns = substr($all_columns, 0, -2); // ])
 	$all_columns = explode('), ', $all_columns);
@@ -66,11 +67,13 @@ function parseQuery($input)
 	$result['all_columns'] = $all_columns2;
 
 	$query_columns = $input['query_columns'];
+	$result['query_columns_old'] = $query_columns;
 	$query_columns = substr($query_columns, strlen('set('));
 	$query_columns = substr($query_columns, 0, -1); // )
 	$result['query_columns'] = json_decode(str_replace('\'', '"', $query_columns), true);
 
 	$quals = $input['quals'];
+	$result['quals_old'] = $quals;
 	$quals = substr($quals, 1);
 	$quals = substr($quals, 0, -1);
 	$quals = explode(', ', $quals);

@@ -229,7 +229,7 @@ CREATE FOREIGN TABLE IF NOT EXISTS gdeltv1_events_api (
   DATEADDED bigint,
   SOURCEURL varchar
 ) SERVER api_fdw OPTIONS (
-  url 'http://gdeltapi/gdeltv1_events',
+  url 'http://app/gdeltv1_events',
   table 'gdeltv1_events'
 );
 
@@ -296,7 +296,7 @@ CREATE FOREIGN TABLE IF NOT EXISTS gdeltv2_events_api (
   DATEADDED bigint,
   SOURCEURL varchar
 ) SERVER api_fdw OPTIONS (
-  url 'http://gdeltapi/gdeltv2_events',
+  url 'http://app/gdeltv2_events',
   table 'gdeltv2_events'
 );
 
@@ -329,6 +329,6 @@ CREATE FOREIGN TABLE IF NOT EXISTS gdeltv2_gkg_api (
   TranslationInfo varchar,
   Extras varchar
 ) SERVER api_fdw OPTIONS (
-  url 'http://gdeltapi/gdeltv2_gkg',
+  url 'http://app/gdeltv2_gkg',
   table 'gdeltv2_gkg'
 );

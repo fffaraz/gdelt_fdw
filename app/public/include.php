@@ -74,7 +74,7 @@ function parseQuery($input)
 	$quals = substr($quals, 1);
 	$quals = substr($quals, 0, -1);
 	$quals = explode(', ', $quals);
-	$result['quals'] = $quals;
+	$result['quals'] = array_map(function ($a) { return explode(' ', $a); }, $quals);
 
 	return $result;
 }

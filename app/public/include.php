@@ -95,7 +95,7 @@ function getDates($query)
     $result = [];
     foreach ($query['quals'] as $qual)
     {
-        if($qual[0] == 'dateadded' && $qual[1] == '=') $result[] = $qual[3];
+        if($qual[0] == 'dateadded' && $qual[1] == '=') $result[] = $qual[2];
         // TODO: add more cases (date range)
     }
     return $result;

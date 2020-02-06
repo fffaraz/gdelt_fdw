@@ -49,7 +49,7 @@ function parseQuery($input)
 	$all_columns = $input['all_columns'];
 	$result['all_columns_old'] = $all_columns;
 	$all_columns = substr($all_columns, strlen('OrderedDict(['));
-	$all_columns = substr($all_columns, 0, -2); // ])
+	$all_columns = substr($all_columns, 0, -3); // )])
 	$all_columns = explode('), ', $all_columns);
 	$all_columns2 = [];
 	foreach ($all_columns as $value)

@@ -4,6 +4,7 @@ require_once 'include.php';
 // https://github.com/googleapis/google-cloud-php-bigquery
 // https://cloud.google.com/bigquery/docs/reference/libraries#client-libraries-install-php
 
+header("Content-Type: text/plain");
 ini_set('memory_limit', -1);
 set_time_limit(0);
 ob_end_flush();

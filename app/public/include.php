@@ -54,8 +54,7 @@ function parseQuery($input)
 	$all_columns2 = [];
 	foreach ($all_columns as $value)
 	{
-		$value = substr($value, 1);
-		$value = substr($value, 0, -1);
+		$value = substr($value, 1); // (
 		$value = explode(', ColumnDefinition(', $value);
 		$value = substr($value[1], 0, -1);
 		$value = explode(', ', $value);

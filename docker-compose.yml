@@ -4,6 +4,7 @@ services:
   db:
     build: ./docker/postgres
     restart: always
+    shm_size: 1G
     volumes:
       - ./volumes/db:/var/lib/postgresql/data
       - ./volumes/data:/data
@@ -37,7 +38,8 @@ services:
     image: fffaraz/php
     restart: always
     volumes:
-      - ./api:/var/www/html
-      - ./volumes/data:/data
+      - ./api:/app
+    depends_on:
+      - db
     ports:
       - 8081:80

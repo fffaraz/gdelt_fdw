@@ -95,7 +95,7 @@ function parseFile($filename)
 	$zip = zip_open($filename);
 	if(!is_resource($zip))
 	{
-		file_put_contents('error.log', zipFileErrMsg($zip) . "\n---\n", FILE_APPEND | LOCK_EX);
+		file_put_contents('/app/data/error.log', zipFileErrMsg($zip) . "\n---\n", FILE_APPEND | LOCK_EX);
 		return;
 	}
 	$zip_entry = zip_read($zip);
@@ -120,7 +120,7 @@ function parseFile($filename)
 
 function parseDate($dateadded)
 {
-	$filename = '/data/' . $dateadded . '.export.CSV.zip';
+	$filename = '/app/data/' . $dateadded . '.export.CSV.zip';
 	if(!file_exists($filename)) file_put_contents($filename, fopen('http://data.gdeltproject.org/events/' . $dateadded . '.export.CSV.zip', 'r'));
 	return parseFile($filename);
 }
@@ -128,5 +128,5 @@ function parseDate($dateadded)
 function parseAll()
 {
 	// $dateadded = substr($filename, 6, -15);
-	foreach(glob('/data/*.export.CSV.zip') as $filename) parseFile($filename);
+	foreach(glob('/app/data/*.export.CSV.zip') as $filename) parseFile($filename);
 }
